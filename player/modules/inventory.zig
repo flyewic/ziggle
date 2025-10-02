@@ -183,7 +183,7 @@ test "successful remove" {
     try inv.remove("Potion");
 
     const err = inv.find("Potion") catch |e| e;
-    try std.testing.expect(err == error.ItemNotFound or err == error.InventoryEmpty);
+    try std.testing.expect(err == ItemNotFound or err == InventoryEmpty);
 
     inv.deinit();
 }
