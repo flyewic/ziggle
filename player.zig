@@ -1,6 +1,9 @@
 const std = @import("std");
 const InventoryModule = @import("inventory.zig");
 
+pub const PlayerDead = error.PlayerDead;
+pub const PlayerFullHealth = error.PlayerFullHealth;
+
 const line = "==============================\n";
 const subline = "------------------------------\n";
 
@@ -29,14 +32,35 @@ pub const Player = struct {
     }
 
     pub fn take_damage(self: *Player, amount: u32) !void {
+        if (self.health == 0) {
+            return PlayerDead;
+        }
+
+        if (self.health < amount) {
+            self.health = 0;
+            return;
+        }
+
         self.health -= amount;
     }
 
     pub fn heal(self: *Player, amount: u32) !void {
+        if (self.health == self.max_health) {
+            return PlayerFullHealth;
+        }
+
+        if (self.health + amount > self.max_health) {
+            self.health = self.max_health();
+        }
+
         self.health += amount;
     }
 
     pub fn full_heal(self: *Player) !void {
+        if (self.health == self.max_health) {
+            return PlayerFullHealth;
+        }
+
         self.health = self.max_health;
     }
 
