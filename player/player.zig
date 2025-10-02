@@ -72,13 +72,7 @@ pub const Player = struct {
         std.debug.print("Health: {}/{}\n", .{ self.health, self.max_health });
         std.debug.print("Inventory ({}/{} items):\n", .{ self.inventory.used_slots, self.inventory.max_slots });
 
-        var current = self.inventory.head;
-        var i: usize = 0;
-        while (current) |node| {
-            std.debug.print("  {}: {s}\n", .{ i, node.item.name });
-            current = node.next;
-            i += 1;
-        }
+        self.inventory.print();
 
         std.debug.print(subline, .{});
     }

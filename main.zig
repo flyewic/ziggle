@@ -21,5 +21,8 @@ pub fn main() !void {
     try player.full_heal();
     player.print();
 
+    try player.inventory.add(.{ .name = "Potion", .quantity = 5 });
+    player.print();
+
     player.inventory.deinit();
 }
