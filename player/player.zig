@@ -1,5 +1,5 @@
 const std = @import("std");
-const InventoryModule = @import("inventory.zig");
+const InventoryModule = @import("modules/inventory.zig");
 
 pub const PlayerDead = error.PlayerDead;
 pub const PlayerFullHealth = error.PlayerFullHealth;
