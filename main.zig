@@ -15,5 +15,11 @@ pub fn main() !void {
     try player.inventory.add(.{ .name = "Potion" });
     player.print();
 
+    try player.take_damage(20);
+    player.print();
+
+    try player.full_heal();
+    player.print();
+
     player.inventory.deinit();
 }
