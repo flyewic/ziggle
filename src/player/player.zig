@@ -3,6 +3,8 @@ const InventoryModule = @import("modules/inventory.zig");
 
 pub const PlayerDead = error.PlayerDead;
 pub const PlayerFullHealth = error.PlayerFullHealth;
+pub const PlayerNoGold = error.PlayerNoGold;
+pub const PlayerNotEnoughGold = error.PlayerNotEnoughGold;
 
 const line = "==============================\n";
 const subline = "------------------------------\n";
@@ -12,6 +14,7 @@ pub const Player = struct {
     health: u32,
     max_health: u32,
     level: u16,
+    gold: u32,
     inventory: InventoryModule.Inventory,
 
     pub fn init(name: []const u8, allocator: *std.mem.Allocator) Player {
@@ -20,6 +23,7 @@ pub const Player = struct {
             .health = 100,
             .max_health = 100,
             .level = 1,
+            .gold = 0,
             .inventory = InventoryModule.Inventory.init(allocator),
         };
     }
@@ -50,7 +54,8 @@ pub const Player = struct {
         }
 
         if (self.health + amount > self.max_health) {
-            self.health = self.max_health();
+            self.health = self.max_health;
+            return;
         }
 
         self.health += amount;
@@ -62,6 +67,22 @@ pub const Player = struct {
         }
 
         self.health = self.max_health;
+    }
+
+    pub fn earn_gold(self: *Player, amount: u32) void {
+        self.gold += amount;
+    }
+
+    pub fn take_gold(self: *Player, amount: u32) !void {
+        if (self.gold == 0) {
+            return PlayerNoGold;
+        }
+
+        if (self.gold < amount) {
+            return PlayerNotEnoughGold;
+        }
+
+        self.gold -= amount;
     }
 
     pub fn print(self: *Player) void {
